@@ -43,9 +43,20 @@ function generateJoke() {
     },
   }
 
-  fetch('https://icanhazdadjoke.com', config)
-    .then((res) => res.json())
+  fetch('https://icanhazdadjoke.com/error', config)
+  .then((res) => {
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+    return res.json();
+  })
     .then((data) => {
       jokeEl.innerHTML = data.joke
     })
+    .catch(error => {
+      console.error('Error:', error);
+      console.log(error);
+      jokeEl.innerHTML = error
+    });
+    
 }
